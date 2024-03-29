@@ -1,3 +1,5 @@
+# API url can be changed in "RegistrationApp\src\app\environments\environment.ts" file
+
 # Registration for a Web App
 
 This project is a user registration wizard for a web app consisting of frontend, backend, and database. The registration process is divided into 4 steps:
