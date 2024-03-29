@@ -12,6 +12,7 @@ yarn.lock
 /e2e/*.xml
 /e2e/*.html
 /e2e/*.json
+.angular/
 
 # ASP.NET
 /bin/

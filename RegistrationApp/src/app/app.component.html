@@ -1,0 +1,223 @@
+<!-- FILEPATH: /E:/Registration_for_webapp/RegistrationApp/src/app/app.component.html -->
+<h3 class="text-center m-3">Registration for a web app</h3>
+
+<div class="t-center">
+  <mat-horizontal-stepper [linear]="isLinear" #stepper class="m-5 mb-1 w-70">
+    <!-- BEGIN: Company data step -->
+    <mat-step [stepControl]="companyDataFG">
+      <form [formGroup]="companyDataFG" class="mt-2 text-start">
+        <ng-template matStepLabel>Company data</ng-template>
+
+        <!-- Company Name field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>Company Name</mat-label>
+          <input matInput placeholder="Company Name" formControlName="companyName" required />
+          <mat-error *ngIf="companyDataFG.get('companyName')?.errors">
+            Company name is required.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Industries field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>Industries</mat-label>
+          <mat-select formControlName="industryId" required>
+            <mat-option *ngFor="let industry of userService.allIndustries" [value]="industry.id">{{
+              industry.industryName }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="companyDataFG.get('industryId')?.errors">
+            Industry is required.
+          </mat-error>
+        </mat-form-field>
+
+        <div class="text-center">
+          <button mat-flat-button matStepperNext color="primary" [disabled]="!companyDataFG.valid">
+            Next
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <!-- END: Company data step -->
+
+    <!-- BEGIN: User data step -->
+    <mat-step [stepControl]="userDataFG">
+      <form [formGroup]="userDataFG" class="mt-2 text-start">
+        <ng-template matStepLabel>User data</ng-template>
+
+        <!-- Last Name field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>Last name</mat-label>
+          <input matInput placeholder="Last name" formControlName="lastName" required />
+          <mat-error *ngIf="userDataFG.get('lastName')?.errors">
+            Last name is required.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- First Name field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>First name</mat-label>
+          <input matInput placeholder="First name" formControlName="firstName" required />
+          <mat-error *ngIf="userDataFG.get('firstName')?.errors">
+            First name is required.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- User Name field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>User name</mat-label>
+          <input matInput placeholder="User name" formControlName="username" required />
+          <mat-error *ngIf="userDataFG.get('username')?.errors?.['required']">
+            User name is required.
+          </mat-error>
+          <mat-error *ngIf="userDataFG.get('username')?.errors?.['usernameTaken']">
+            This username is already taken.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput placeholder="Password" formControlName="password" required />
+          <mat-error *ngIf="userDataFG.get('password')?.errors?.['required']">
+            Password is required.
+          </mat-error>
+          <mat-error *ngIf="userDataFG.get('password')?.errors?.['minlength']">
+            Password must be at least 8 characters long.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Password field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>Confirm Password</mat-label>
+          <input type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword" required />
+
+          <mat-error *ngIf="userDataFG.get('confirmPassword')?.errors?.['required']">
+            Confirm Password is required.
+          </mat-error>
+          <mat-error *ngIf="userDataFG.get('confirmPassword')?.errors?.['passwordMismatch']">
+            Confirm Password is not matching with password.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- E-Mail field -->
+        <mat-form-field appearance="outline" class="w-50 d-block mb-2">
+          <mat-label>E-Mail</mat-label>
+          <input matInput placeholder="example@example.com" formControlName="email" />
+          <mat-error *ngIf="userDataFG.get('email')?.errors?.['email']">
+            This is not a valid email.
+          </mat-error>
+        </mat-form-field>
+
+        <div class="text-center">
+          <button mat-flat-button matStepperPrevious color="primary" class="me-2">
+            Back
+          </button>
+          <button [disabled]="!userDataFG.valid" mat-flat-button matStepperNext color="primary">
+            Next
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <!-- END: User data step -->
+
+    <!-- BEGIN: Terms and privacy step -->
+    <mat-step [stepControl]="termsNprivacyFG">
+      <form [formGroup]="termsNprivacyFG" class="mt-2 text-start">
+        <ng-template matStepLabel>Summary</ng-template>
+
+        <h4>Summary of added data</h4>
+
+        <mat-list class="d-block">
+          <mat-list-item>
+            <strong>Company Name:</strong>
+            {{ this.companyDataFG.value.companyName }}
+          </mat-list-item>
+          <mat-list-item *ngIf="
+            this.companyDataFG.value.industryId !== null &&
+            this.companyDataFG.value.industryId !== undefined
+          ">
+            <strong>Industry:</strong>
+            {{ getIndustryNameById(this.companyDataFG.value.industryId) }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>Last Name:</strong>
+            {{ this.userDataFG.value.lastName }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>First Name:</strong>
+            {{ this.userDataFG.value.firstName }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>User Name:</strong>
+            {{ this.userDataFG.value.username }}
+          </mat-list-item>
+          <mat-list-item *ngIf="this.userDataFG.value.email">
+            <strong>Email:</strong>
+            {{ this.userDataFG.value.email }}
+          </mat-list-item>
+        </mat-list>
+
+        <section>
+          <!-- Terms checkbox -->
+          <mat-checkbox formControlName="terms" required class="d-block">Approval of terms of service</mat-checkbox>
+          <mat-error *ngIf="termsNprivacyFG.get('terms')?.errors && termsNprivacyFG.get('terms')?.touched"
+            class="fs-12">
+            Please accept the terms of service.
+          </mat-error>
+
+          <!-- Privacy checkbox -->
+          <mat-checkbox formControlName="privacy" required>Approval of privacy policy</mat-checkbox>
+          <mat-error *ngIf="termsNprivacyFG.get('privacy')?.errors && termsNprivacyFG.get('privacy')?.touched"
+            class="fs-12">
+            Please accept the privacy policy.
+          </mat-error>
+        </section>
+
+        <div class="text-center">
+          <button mat-flat-button matStepperPrevious color="primary" class="me-2">
+            Back
+          </button>
+          <button [disabled]="!termsNprivacyFG.valid" mat-flat-button matStepperNext
+            (click)="submitCompanyAndUserData(stepper)" color="warn">
+            Submit
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <!-- END: Terms and privacy step -->
+
+    <!-- BEGIN: Done step -->
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <div class="mt-2 text-center">
+        <h4 *ngIf="isSubmitError">Sorry! Something went wrong, please try again.</h4>
+        <h4 *ngIf="!isSubmitError">Congratulations! You have successfully submitted your data.</h4>
+      </div>
+    </mat-step>
+    <!-- END: Done step -->
+  </mat-horizontal-stepper>
+</div>
+
+<div class="container">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>No</th>
+        <th>Last Name</th>
+        <th>First name</th>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Company Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userService.allUsers; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.userName}}</td>
+        <td>{{user.email ? user.email : '-'}}</td>
+        <td>{{ user.companyName }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
