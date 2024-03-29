@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "5rtVK3iLREcC4rbU27VSNi2sZ3puEWr8b9GyZh5ICqI=",
+  "Source": "WebApiRegistration",
+  "BasePath": "_content/WebApiRegistration",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
